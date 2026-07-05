@@ -143,12 +143,24 @@ class RAGRetriever:
     # ── Retrieval ─────────────────────────────────────────────────────────
 
     def _vector_search(self, query: str, n: int) -> list[str]:
+        docs, _ = self._vector_search_scored(query, n)
+        return docs
+
+    def _vector_search_scored(self, query: str, n: int):
+        """Vector search returning (documents, similarities).
+        Chroma returns cosine *distance* (0=identical … 2=opposite); we convert
+        to similarity = 1 - distance so higher = more relevant."""
         query_embedding = _embed([query])[0]
         results = self.collection.query(
             query_embeddings=[query_embedding],
             n_results=min(n, self.collection.count()),
         )
-        return results["documents"][0] if results["documents"] else []
+        if not results["documents"] or not results["documents"][0]:
+            return [], []
+        docs = results["documents"][0]
+        dists = results.get("distances", [[None]])[0]
+        sims = [(1.0 - d) if d is not None else 0.0 for d in dists]
+        return docs, sims
 
     def _bm25_search(self, query: str, n: int) -> list[str]:
         if self._bm25 is None or not self._docs:
@@ -157,18 +169,36 @@ class RAGRetriever:
         ranked = sorted(zip(self._docs, scores), key=lambda x: x[1], reverse=True)
         return [doc for doc, score in ranked[:n] if score > 0]
 
-    def retrieve(self, query: str, k: int = 3, mode: str = "hybrid") -> list[str]:
+    def retrieve(self, query: str, k: int = 3, mode: str = "hybrid",
+                 min_similarity: float | None = None) -> list[str]:
         """
         Return top-k most relevant chunks for a query.
 
         mode: "hybrid" (default) | "vector" | "bm25"
         Pipeline: fetch k * fetch_multiplier candidates per retriever,
         RRF-fuse, optionally rerank with a cross-encoder, return top-k.
+
+        min_similarity: if set, retrieval *abstains* when the best candidate's
+        cosine similarity is below this threshold — returning [] instead of
+        forcing through loosely-related chunks. This is the structural fix for
+        out-of-context ("trap") questions: with no context to build on, the
+        agent can't confabulate a grounded-looking answer. Typical values
+        0.2–0.4 for nomic-embed-text; higher = stricter abstention.
         """
         if self.collection.count() == 0:
             return []
         n_fetch = k * self.fetch_multiplier
         try:
+            # Abstention gate: judged on vector similarity, which is comparable
+            # across queries (BM25 scores are not).
+            if min_similarity is not None:
+                _, sims = self._vector_search_scored(query, n_fetch)
+                if not sims or max(sims) < min_similarity:
+                    logger.debug(f"[{self.collection_name}] abstained: "
+                                 f"best sim {max(sims) if sims else 0:.3f} "
+                                 f"< {min_similarity}")
+                    return []
+
             if mode == "vector":
                 fused = self._vector_search(query, n_fetch)
             elif mode == "bm25":
@@ -185,9 +215,11 @@ class RAGRetriever:
             logger.error(f"RAG retrieve error ({self.collection_name}): {e}")
             return []
 
-    def retrieve_as_string(self, query: str, k: int = 3, mode: str = "hybrid") -> str:
-        """Convenience wrapper — returns chunks joined for prompt injection."""
-        chunks = self.retrieve(query, k, mode)
+    def retrieve_as_string(self, query: str, k: int = 3, mode: str = "hybrid",
+                           min_similarity: float | None = None) -> str:
+        """Convenience wrapper — returns chunks joined for prompt injection.
+        Returns "" when retrieval abstains (see retrieve's min_similarity)."""
+        chunks = self.retrieve(query, k, mode, min_similarity=min_similarity)
         return "\n---\n".join(chunks) if chunks else ""
 
     def count(self) -> int:

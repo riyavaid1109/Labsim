@@ -102,9 +102,12 @@ Your personality: {self.personality}.
 Motivation level: {self.motivation:.1f}/10.
 Speak in first person. Be concise (under 80 words). Stay in character."""
 
-    def retrieve_context(self, query: str, k: int = 3) -> str:
-        """Pull relevant context from private KB for a given query."""
-        return self.kb.retrieve_as_string(query, k)
+    def retrieve_context(self, query: str, k: int = 3,
+                         min_similarity: float | None = None) -> str:
+        """Pull relevant context from private KB for a given query.
+        If min_similarity is set and no chunk clears it, returns "" so the
+        caller can have the agent abstain instead of confabulating."""
+        return self.kb.retrieve_as_string(query, k, min_similarity=min_similarity)
 
     def update_motivation(
         self,
@@ -131,11 +134,32 @@ Speak in first person. Be concise (under 80 words). Stay in character."""
         self.reputation = round(self.reputation + delta, 2)
         logger.info(f"{self.name} reputation: {self.reputation}")
 
-    def speak(self, prompt: str, context: str = "") -> str:
-        """Core speak method — injects RAG context and persona into every LLM call."""
+    def speak(self, prompt: str, context: str = "", grounded: bool = False) -> str:
+        """Core speak method — injects RAG context and persona into every LLM call.
+
+        grounded=True adds a strict-grounding instruction: answer only from the
+        provided context and explicitly say what the context does not cover.
+        This is the standard RAG faithfulness mitigation. Off by default so the
+        simulation's conversational behavior is unchanged; the faithfulness
+        eval toggles it on to measure the effect."""
         full_prompt = self.persona_block()
         if context:
             full_prompt += f"\n\n[Relevant context from your notes and papers]\n{context}"
+            if grounded:
+                full_prompt += (
+                    "\n\nAnswer using ONLY the context above. Do not add facts "
+                    "from outside it, even if you believe them to be true. If the "
+                    "context does not contain the answer, say so plainly rather "
+                    "than guessing."
+                )
+        elif grounded:
+            # Abstention path: retrieval returned nothing relevant. Instruct the
+            # agent to decline rather than answer from parametric memory.
+            full_prompt += (
+                "\n\n[No relevant information was found in your notes for this.]\n"
+                "You have no supporting material. Say plainly that your notes do "
+                "not cover this, and do not guess or invent an answer."
+            )
         full_prompt += f"\n\n{prompt}"
         return query_ollama(full_prompt, caller=f"{self.name}.speak")
 

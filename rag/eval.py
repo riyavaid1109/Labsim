@@ -39,9 +39,11 @@ FAITHFULNESS_SCHEMA = {
     "properties": {
         "faithfulness": {"type": "number", "minimum": 0, "maximum": 1},
         "answer_relevancy": {"type": "number", "minimum": 0, "maximum": 1},
+        "supported_claims": {"type": "integer", "minimum": 0},
         "unsupported_claims": {"type": "array", "items": {"type": "string"}},
     },
-    "required": ["faithfulness", "answer_relevancy", "unsupported_claims"],
+    "required": ["faithfulness", "answer_relevancy", "supported_claims",
+                 "unsupported_claims"],
 }
 
 
@@ -118,9 +120,12 @@ def judge_faithfulness(question: str, context: str, answer: str,
     """
     LLM-as-judge scoring of one (question, context, answer) triple.
 
-    faithfulness      — fraction of the answer's claims supported by context
-    answer_relevancy  — how directly the answer addresses the question
-    unsupported_claims — claims in the answer with no grounding in context
+    Returns a dict with:
+      faithfulness       — fraction of the answer's claims supported by context
+      answer_relevancy   — how directly the answer addresses the question
+      supported_claims   — count of claims grounded in the context
+      unsupported_claims — list of claims with no grounding in context
+      hallucination_rate — unsupported / (supported + unsupported)
     """
     from utils import query_llm_json  # local import: layer 1 stays LLM-free
 
@@ -135,32 +140,45 @@ RETRIEVED CONTEXT (the ONLY permitted evidence):
 ANSWER:
 {answer}
 
-Score:
+Break the answer into individual factual claims, then judge each against the
+context. Score:
 - faithfulness (0-1): fraction of the answer's factual claims that are
   directly supported by the retrieved context. Claims from outside the
-  context lower this score even if true.
+  context lower this score even if they happen to be true.
 - answer_relevancy (0-1): how directly the answer addresses the question.
-- unsupported_claims: list each claim in the answer that the context does
-  not support (empty list if none)."""
-    return query_llm_json(prompt, FAITHFULNESS_SCHEMA, caller=caller)
+- supported_claims: number of claims that ARE supported by the context.
+- unsupported_claims: list each claim the context does NOT support
+  (empty list if none). These are hallucinations relative to the context."""
+    verdict = query_llm_json(prompt, FAITHFULNESS_SCHEMA, caller=caller)
+    if verdict is None:
+        return None
+    # Derive hallucination rate from the claim accounting.
+    unsupported = verdict.get("unsupported_claims", []) or []
+    supported = int(verdict.get("supported_claims", 0) or 0)
+    total = supported + len(unsupported)
+    verdict["hallucination_rate"] = round(len(unsupported) / total, 4) if total else 0.0
+    return verdict
 
 
 def evaluate_agent_responses(triples: list[dict]) -> dict:
     """
     Batch-judge a list of {"question", "context", "answer"} triples.
-    Returns mean faithfulness / relevancy plus per-item results.
+    Returns mean faithfulness / relevancy / hallucination rate plus per-item
+    results.
     """
-    per_item, faith, rel = [], [], []
+    per_item, faith, rel, hall = [], [], [], []
     for t in triples:
         verdict = judge_faithfulness(t["question"], t["context"], t["answer"])
         per_item.append(verdict)
         if verdict:
             faith.append(float(verdict["faithfulness"]))
             rel.append(float(verdict["answer_relevancy"]))
+            hall.append(float(verdict["hallucination_rate"]))
     n = len(faith)
     return {
         "mean_faithfulness": round(sum(faith) / n, 4) if n else None,
         "mean_answer_relevancy": round(sum(rel) / n, 4) if n else None,
+        "mean_hallucination_rate": round(sum(hall) / n, 4) if n else None,
         "n_judged": n,
         "per_item": per_item,
     }

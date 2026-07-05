@@ -1,0 +1,86 @@
+{
+  "documents": [
+    "Attention Is All You Need (Vaswani et al., 2017): introduced the Transformer architecture based on self-attention.",
+    "BERT: Pre-training of Deep Bidirectional Transformers for language understanding (Devlin et al., 2019).",
+    "Language Models are Few-Shot Learners (Brown et al., 2020): the GPT-3 paper demonstrating in-context learning.",
+    "A call for reproducibility in machine learning (Pineau et al., 2021): checklists and reporting standards.",
+    "Measurement invariance and benchmarking pitfalls in NLP evaluation.",
+    "Cross-lingual representational alignment: methods and limitations for multilingual models.",
+    "Federated optimisation in heterogeneous networks (Li et al., 2020): the FedProx algorithm for non-IID data.",
+    "RoBERTa: A Robustly Optimized BERT Pretraining Approach (Liu et al., 2019): longer training, more data.",
+    "Vision Transformer (Dosovitskiy et al., 2021): applying the Transformer to image patches for classification.",
+    "Reformer: The Efficient Transformer (Kitaev et al., 2020): locality-sensitive hashing to reduce attention cost.",
+    "A survey of data augmentation techniques for low-resource natural language processing.",
+    "Scaling Laws for Neural Language Models (Kaplan et al., 2020): loss scales as a power law with model size.",
+    "Deduplicating training data makes language models better (Lee et al., 2022).",
+    "The reproducibility crisis in psychology: implications for empirical science broadly.",
+    "Communication-efficient learning of deep networks from decentralized data (McMahan et al., 2017): original FedAvg.",
+    "Massively multilingual sentence embeddings for zero-shot cross-lingual transfer (LASER).",
+    "GLUE: A multi-task benchmark and analysis platform for natural language understanding.",
+    "Electra: pre-training text encoders as discriminators rather than generators (Clark et al., 2020).",
+    "Random seed variability in deep reinforcement learning results (Henderson et al., 2018).",
+    "Differentially private federated learning: privacy budgets across hospital sites."
+  ],
+  "queries": [
+    {
+      "query": "who introduced the original transformer architecture with self-attention?",
+      "relevant": ["Vaswani", "Attention Is All You Need"],
+      "note": "distractors: ViT, Reformer, RoBERTa, Electra all mention transformers/attention"
+    },
+    {
+      "query": "efficient attention that reduces the quadratic cost of transformers",
+      "relevant": ["Reformer", "locality-sensitive hashing"],
+      "note": "distractor: Vaswani transformer, ViT both about attention but not efficiency"
+    },
+    {
+      "query": "applying transformers to images instead of text",
+      "relevant": ["Vision Transformer", "Dosovitskiy", "image patches"],
+      "note": "distractors: all the text-transformer papers"
+    },
+    {
+      "query": "in-context few-shot learning with very large language models",
+      "relevant": ["Few-Shot", "GPT-3", "Brown", "in-context"],
+      "note": "distractor: scaling laws paper also about large LMs"
+    },
+    {
+      "query": "how does model performance scale with parameter count?",
+      "relevant": ["Scaling Laws", "Kaplan", "power law"],
+      "note": "distractor: GPT-3 few-shot paper also about large models"
+    },
+    {
+      "query": "reproducibility standards and checklists for ML research",
+      "relevant": ["reproducibility", "Pineau", "checklists"],
+      "note": "distractors: psychology reproducibility crisis, RL seed variability"
+    },
+    {
+      "query": "seed sensitivity and variance in reinforcement learning results",
+      "relevant": ["Random seed", "reinforcement learning", "Henderson"],
+      "note": "distractor: Pineau ML reproducibility, psychology crisis"
+    },
+    {
+      "query": "the original federated averaging algorithm on decentralized data",
+      "relevant": ["FedAvg", "McMahan", "decentralized"],
+      "note": "distractors: FedProx, differentially private FL"
+    },
+    {
+      "query": "handling non-IID data across clients in federated learning",
+      "relevant": ["Federated optimisation", "heterogeneous", "FedProx", "non-IID"],
+      "note": "distractors: FedAvg, private FL"
+    },
+    {
+      "query": "zero-shot transfer across languages using multilingual embeddings",
+      "relevant": ["multilingual sentence embeddings", "zero-shot cross-lingual", "LASER"],
+      "note": "distractor: cross-lingual representational alignment paper"
+    },
+    {
+      "query": "pitfalls and invariance problems in NLP benchmark evaluation",
+      "relevant": ["benchmarking pitfalls", "Measurement invariance"],
+      "note": "distractor: GLUE benchmark paper"
+    },
+    {
+      "query": "a robustly optimized BERT with longer training",
+      "relevant": ["RoBERTa", "Liu", "Robustly Optimized"],
+      "note": "distractors: original BERT, Electra"
+    }
+  ]
+}
