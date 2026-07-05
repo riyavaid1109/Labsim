@@ -1,0 +1,377 @@
+[
+  {
+    "timestep": 1,
+    "problem": "# Research Problem 1\n\nTransformer architectures for low-resource NLP tasks. Key ",
+    "lead": "Farah",
+    "authorship": [
+      {
+        "name": "Farah",
+        "position": 1
+      },
+      {
+        "name": "Farah",
+        "position": 2
+      },
+      {
+        "name": "Giulio",
+        "position": 3
+      }
+    ],
+    "review_decision": "REVISE",
+    "avg_review_score": 4.0,
+    "metrics": {
+      "total_messages": 16,
+      "bus_factor": 4,
+      "message_entropy": 2.128,
+      "avg_review_score": 4.0,
+      "credit_dispute_rate": 0.0,
+      "shared_kb_chunks": 10,
+      "entropy_this_timestep": 2.128,
+      "agent_states": [
+        {
+          "name": "Aiko",
+          "role": "PhD student",
+          "motivation": 3.75,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Ben",
+          "role": "PhD student",
+          "motivation": 4.6,
+          "reputation": 0.0,
+          "experience": 2
+        },
+        {
+          "name": "Camille",
+          "role": "PhD student",
+          "motivation": 2.78,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Farah",
+          "role": "postdoc",
+          "motivation": 5.24,
+          "reputation": 0.05,
+          "experience": 3
+        },
+        {
+          "name": "Giulio",
+          "role": "postdoc",
+          "motivation": 5.11,
+          "reputation": 0.15,
+          "experience": 3
+        },
+        {
+          "name": "Prof. Chen",
+          "role": "PI",
+          "motivation": 5.98,
+          "reputation": 0.1,
+          "experience": 5
+        }
+      ]
+    },
+    "skipped": false
+  },
+  {
+    "timestep": 2,
+    "problem": "# Research Problem 2\n\nImproving reproducibility in deep learning experiments. Fo",
+    "lead": "Giulio",
+    "authorship": [
+      {
+        "name": "Farah",
+        "position": 1
+      },
+      {
+        "name": "Giulio",
+        "position": 2
+      },
+      {
+        "name": "Giulio",
+        "position": 3
+      }
+    ],
+    "review_decision": "ACCEPT",
+    "avg_review_score": 4.0,
+    "metrics": {
+      "total_messages": 32,
+      "bus_factor": 4,
+      "message_entropy": 2.236,
+      "avg_review_score": 4.0,
+      "credit_dispute_rate": 0.0,
+      "shared_kb_chunks": 20,
+      "entropy_this_timestep": 2.128,
+      "agent_states": [
+        {
+          "name": "Aiko",
+          "role": "PhD student",
+          "motivation": 3.11,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Ben",
+          "role": "PhD student",
+          "motivation": 4.1,
+          "reputation": 0.0,
+          "experience": 2
+        },
+        {
+          "name": "Camille",
+          "role": "PhD student",
+          "motivation": 1.99,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Farah",
+          "role": "postdoc",
+          "motivation": 5.21,
+          "reputation": 0.2,
+          "experience": 3
+        },
+        {
+          "name": "Giulio",
+          "role": "postdoc",
+          "motivation": 5.46,
+          "reputation": 1.2,
+          "experience": 3
+        },
+        {
+          "name": "Prof. Chen",
+          "role": "PI",
+          "motivation": 6.46,
+          "reputation": 0.2,
+          "experience": 5
+        }
+      ]
+    },
+    "skipped": false
+  },
+  {
+    "timestep": 3,
+    "problem": "# Research Problem 3\n\nCross-lingual transfer learning for biomedical NER. Datase",
+    "lead": "Giulio",
+    "authorship": [
+      {
+        "name": "Giulio",
+        "position": 1
+      },
+      {
+        "name": "Giulio",
+        "position": 2
+      },
+      {
+        "name": "Farah",
+        "position": 3
+      }
+    ],
+    "review_decision": "REVISE",
+    "avg_review_score": 4.0,
+    "metrics": {
+      "total_messages": 48,
+      "bus_factor": 4,
+      "message_entropy": 2.224,
+      "avg_review_score": 4.0,
+      "credit_dispute_rate": 0.0,
+      "shared_kb_chunks": 30,
+      "entropy_this_timestep": 2.128,
+      "agent_states": [
+        {
+          "name": "Aiko",
+          "role": "PhD student",
+          "motivation": 2.51,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Ben",
+          "role": "PhD student",
+          "motivation": 3.69,
+          "reputation": 0.0,
+          "experience": 2
+        },
+        {
+          "name": "Camille",
+          "role": "PhD student",
+          "motivation": 1.28,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Farah",
+          "role": "postdoc",
+          "motivation": 5.03,
+          "reputation": 0.35,
+          "experience": 3
+        },
+        {
+          "name": "Giulio",
+          "role": "postdoc",
+          "motivation": 5.11,
+          "reputation": 1.25,
+          "experience": 3
+        },
+        {
+          "name": "Prof. Chen",
+          "role": "PI",
+          "motivation": 6.93,
+          "reputation": 0.3,
+          "experience": 5
+        }
+      ]
+    },
+    "skipped": false
+  },
+  {
+    "timestep": 4,
+    "problem": "# Research Problem 4\n\nEvaluation bias in LLM benchmarks. Hypothesis: popular ben",
+    "lead": "Giulio",
+    "authorship": [
+      {
+        "name": "Giulio",
+        "position": 1
+      },
+      {
+        "name": "Giulio",
+        "position": 2
+      },
+      {
+        "name": "Farah",
+        "position": 3
+      }
+    ],
+    "review_decision": "REVISE",
+    "avg_review_score": 3.5,
+    "metrics": {
+      "total_messages": 64,
+      "bus_factor": 4,
+      "message_entropy": 2.21,
+      "avg_review_score": 3.88,
+      "credit_dispute_rate": 0.0,
+      "shared_kb_chunks": 40,
+      "entropy_this_timestep": 2.128,
+      "agent_states": [
+        {
+          "name": "Aiko",
+          "role": "PhD student",
+          "motivation": 2.1,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Ben",
+          "role": "PhD student",
+          "motivation": 2.93,
+          "reputation": 0.0,
+          "experience": 2
+        },
+        {
+          "name": "Camille",
+          "role": "PhD student",
+          "motivation": 0.69,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Farah",
+          "role": "postdoc",
+          "motivation": 4.98,
+          "reputation": 0.5,
+          "experience": 3
+        },
+        {
+          "name": "Giulio",
+          "role": "postdoc",
+          "motivation": 5.05,
+          "reputation": 1.3,
+          "experience": 3
+        },
+        {
+          "name": "Prof. Chen",
+          "role": "PI",
+          "motivation": 7.73,
+          "reputation": 0.4,
+          "experience": 5
+        }
+      ]
+    },
+    "skipped": false
+  },
+  {
+    "timestep": 5,
+    "problem": "# Research Problem 5\n\nFederated learning for privacy-preserving clinical NLP. Ch",
+    "lead": "Giulio",
+    "authorship": [
+      {
+        "name": "Giulio",
+        "position": 1
+      },
+      {
+        "name": "Giulio",
+        "position": 2
+      },
+      {
+        "name": "Farah",
+        "position": 3
+      }
+    ],
+    "review_decision": "REVISE",
+    "avg_review_score": 3.5,
+    "metrics": {
+      "total_messages": 81,
+      "bus_factor": 4,
+      "message_entropy": 2.32,
+      "avg_review_score": 3.8,
+      "credit_dispute_rate": 0.0,
+      "shared_kb_chunks": 51,
+      "entropy_this_timestep": 2.406,
+      "agent_states": [
+        {
+          "name": "Aiko",
+          "role": "PhD student",
+          "motivation": 1.5,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Ben",
+          "role": "PhD student",
+          "motivation": 2.17,
+          "reputation": 0.0,
+          "experience": 2
+        },
+        {
+          "name": "Camille",
+          "role": "PhD student",
+          "motivation": 0.0,
+          "reputation": 0.0,
+          "experience": 1
+        },
+        {
+          "name": "Farah",
+          "role": "postdoc",
+          "motivation": 4.73,
+          "reputation": 0.65,
+          "experience": 3
+        },
+        {
+          "name": "Giulio",
+          "role": "postdoc",
+          "motivation": 5.0,
+          "reputation": 1.35,
+          "experience": 3
+        },
+        {
+          "name": "Prof. Chen",
+          "role": "PI",
+          "motivation": 8.08,
+          "reputation": 0.5,
+          "experience": 5
+        }
+      ]
+    },
+    "skipped": false
+  }
+]

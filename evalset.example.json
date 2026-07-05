@@ -1,0 +1,14 @@
+[
+  {
+    "query": "how does reproducibility relate to random seeds?",
+    "relevant": ["random seed", "reproducibility"]
+  },
+  {
+    "query": "what are the limitations of citation metrics?",
+    "relevant": ["h-index", "citation"]
+  },
+  {
+    "query": "peer review incentives and bias",
+    "relevant": ["peer review", "bias"]
+  }
+]
